@@ -4,7 +4,8 @@ import Transfer from "./Transfer"
 import Burn from "./Burn"
 import Mint from './Mint'
 
-const Menu = () => {
+const Menu = (props) => {
+    const { isTokenOwner } = props
     const [opt, setOpt] = useState(null)
 
     const handleOpt = (option) => {
@@ -16,13 +17,17 @@ const Menu = () => {
             {!opt && (
                 <>
                     <div className='containerMargin item' onClick={() => handleOpt('transfer')}>TRANSFER TOKENS</div>
-                    <div className='containerMargin item' onClick={() => handleOpt('burn')}>BURN TOKENS</div>
-                    <div className='containerMargin item' onClick={() => handleOpt('mint')}>MINT TOKENS</div>
+                    {
+                        isTokenOwner && (<>
+                            <div className='containerMargin item' onClick={() => handleOpt('burn')}>BURN TOKENS</div>
+                            <div className='containerMargin item' onClick={() => handleOpt('mint')}>MINT TOKENS</div>
+                        </>)
+                    }
                 </>
             )}
-            {opt === "transfer" && <Transfer handleOpt={handleOpt} />}
-            {opt === "mint" && <Mint handleOpt={handleOpt} />}
-            {opt === "burn" && <Burn handleOpt={handleOpt} />}
+            {opt === "transfer" && <Transfer handleOpt={handleOpt} {...props} />}
+            {opt === "mint" && <Mint handleOpt={handleOpt} {...props} />}
+            {opt === "burn" && <Burn handleOpt={handleOpt} {...props} />}
         </div>
     )
 }
